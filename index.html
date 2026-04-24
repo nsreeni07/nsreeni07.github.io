@@ -1,880 +1,576 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sreeni — Engineering Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #080c10;
-      --surface: #0d1117;
-      --card: #111820;
-      --border: #1e2d3d;
-      --border-bright: #2e4a63;
-      --text: #e2eaf4;
-      --muted: #6a8aa8;
-      --accent: #e8622a;
-      --accent2: #3b96d4;
-      --accent3: #2dd4a0;
-      --mono: 'Space Mono', monospace;
-      --sans: 'Syne', sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    /* ── GRID OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(59,150,212,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(59,150,212,0.03) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      padding: 1.2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(8,12,16,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      color: var(--accent2);
-      letter-spacing: 0.05em;
-      text-decoration: none;
-    }
-
-    .nav-logo span { color: var(--accent); }
-
-    .nav-links {
-      display: flex;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--muted);
-      text-decoration: none;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    /* ── HERO ── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 8rem 2.5rem 4rem;
-      z-index: 1;
-    }
-
-    .hero-inner {
-      max-width: 900px;
-    }
-
-    .hero-tag {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      color: var(--accent);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .hero-tag::before {
-      content: '';
-      display: block;
-      width: 32px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .hero h1 {
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      font-weight: 800;
-      line-height: 0.95;
-      letter-spacing: -0.02em;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero h1 .line-1 { color: var(--text); display: block; }
-    .hero h1 .line-2 {
-      display: block;
-      -webkit-text-stroke: 1px var(--border-bright);
-      color: transparent;
-    }
-
-    .hero-desc {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 480px;
-      margin-bottom: 2.5rem;
-      line-height: 1.7;
-    }
-
-    .hero-desc strong { color: var(--text); font-weight: 600; }
-
-    .hero-cta {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.75rem 1.5rem;
-      border-radius: 3px;
-      text-decoration: none;
-      transition: all 0.2s;
-      cursor: pointer;
-      border: none;
-      display: inline-block;
-    }
-
-    .btn-primary {
-      background: var(--accent);
-      color: #fff;
-    }
-
-    .btn-primary:hover { background: #d4541f; }
-
-    .btn-outline {
-      background: transparent;
-      color: var(--muted);
-      border: 1px solid var(--border-bright);
-    }
-
-    .btn-outline:hover { color: var(--text); border-color: var(--muted); }
-
-    /* Hero stats */
-    .hero-stats {
-      position: absolute;
-      right: 2.5rem;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .stat {
-      text-align: right;
-    }
-
-    .stat-num {
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--text);
-      line-height: 1;
-      display: block;
-    }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .stat-line {
-      width: 1px;
-      height: 40px;
-      background: var(--border);
-      margin-left: auto;
-      margin-top: 1rem;
-    }
-
-    /* ── SECTION COMMON ── */
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 2.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      margin-bottom: 0.75rem;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .section-label::before {
-      content: '';
-      display: block;
-      width: 24px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 3rem;
-      line-height: 1.1;
-    }
-
-    /* ── PROJECTS ── */
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .project-card {
-      background: var(--card);
-      padding: 2rem;
-      position: relative;
-      overflow: hidden;
-      transition: background 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .project-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--card-accent, var(--accent));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s;
-    }
-
-    .project-card:hover { background: #151e28; }
-    .project-card:hover::before { transform: scaleX(1); }
-
-    .project-card.featured {
-      grid-column: span 2;
-    }
-
-    @media (max-width: 700px) {
-      .project-card.featured { grid-column: span 1; }
-    }
-
-    .project-status {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.6rem;
-      border-radius: 2px;
-      display: inline-block;
-      width: fit-content;
-    }
-
-    .status-active { background: rgba(45,212,160,0.1); color: var(--accent3); }
-    .status-complete { background: rgba(59,150,212,0.1); color: var(--accent2); }
-    .status-wip { background: rgba(232,98,42,0.1); color: var(--accent); }
-
-    .project-name {
-      font-size: 1.4rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      color: var(--text);
-    }
-
-    .project-desc {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .project-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: auto;
-    }
-
-    .tag {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      border: 1px solid var(--border);
-      padding: 0.2rem 0.5rem;
-      border-radius: 2px;
-      letter-spacing: 0.05em;
-    }
-
-    .project-arrow {
-      position: absolute;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      color: var(--border-bright);
-      font-size: 1.1rem;
-      transition: color 0.2s, transform 0.2s;
-    }
-
-    .project-card:hover .project-arrow {
-      color: var(--accent);
-      transform: translate(2px, -2px);
-    }
-
-    /* ── SKILLS ── */
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 4rem;
-    }
-
-    .skill-block {
-      background: var(--card);
-      padding: 1.5rem;
-    }
-
-    .skill-category {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--accent2);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .skill-list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .skill-list li {
-      font-size: 0.88rem;
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .skill-list li::before {
-      content: '▸';
-      color: var(--accent);
-      font-size: 0.65rem;
-    }
-
-    /* ── ABOUT ── */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: start;
-    }
-
-    @media (max-width: 700px) {
-      .about-grid { grid-template-columns: 1fr; }
-      .hero-stats { display: none; }
-    }
-
-    .about-text p {
-      color: var(--muted);
-      margin-bottom: 1rem;
-      line-height: 1.75;
-    }
-
-    .about-text p strong { color: var(--text); }
-
-    .about-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-    }
-
-    .meta-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.9rem 1.25rem;
-      background: var(--card);
-      gap: 1rem;
-    }
-
-    .meta-key {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .meta-val {
-      font-size: 0.88rem;
-      color: var(--text);
-      text-align: right;
-    }
-
-    /* ── CONTACT ── */
-    .contact-inner {
-      border: 1px solid var(--border);
-      padding: 3rem;
-      background: var(--card);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-    }
-
-    @media (max-width: 700px) {
-      .contact-inner { grid-template-columns: 1fr; padding: 2rem; }
-    }
-
-    .contact-title {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.75rem;
-    }
-
-    .contact-sub {
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.65;
-    }
-
-    .contact-links {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      background: var(--border);
-    }
-
-    .contact-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem 1.25rem;
-      background: var(--surface);
-      text-decoration: none;
-      transition: background 0.15s;
-      gap: 1rem;
-    }
-
-    .contact-link:hover { background: #111820; }
-
-    .contact-link-label {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .contact-link-val {
-      font-size: 0.88rem;
-      color: var(--accent2);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem 2.5rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    footer p {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-    }
-
-    footer p span { color: var(--accent); }
-
-    /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Delay helpers */
-    .d1 { transition-delay: 0.05s; }
-    .d2 { transition-delay: 0.12s; }
-    .d3 { transition-delay: 0.19s; }
-    .d4 { transition-delay: 0.26s; }
-
-    /* Scrollbar */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 3px; }
-
-    /* Cursor dot */
-    .cursor {
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s, opacity 0.2s;
-      transform: translate(-50%, -50%);
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sreeni Narayanan — Engineering Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0b1628;
+  --navy2:#0f1e35;
+  --navy3:#162540;
+  --silver:#c8d4e0;
+  --silver2:#e8eef4;
+  --silver3:#f4f7fa;
+  --white:#ffffff;
+  --green:#1a7a4a;
+  --green2:#22a063;
+  --green3:#d4f0e2;
+  --text-dark:#0b1628;
+  --text-mid:#3a5068;
+  --text-light:#7a9ab5;
+  --border:#d0dce8;
+  --border-dark:#1e3050;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --mono:'DM Mono',monospace;
+  --sans:'Outfit',sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--white);color:var(--text-dark);font-family:var(--sans);overflow-x:hidden;cursor:none}
+
+/* CURSOR */
+#cur{position:fixed;width:10px;height:10px;background:var(--green);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
+#cur-ring{position:fixed;width:40px;height:40px;border:1.5px solid var(--navy);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .4s var(--ease),height .4s var(--ease),border-color .3s,opacity .3s;opacity:.35}
+body.hov #cur{transform:translate(-50%,-50%) scale(0)}
+body.hov #cur-ring{width:60px;height:60px;opacity:.8;border-color:var(--green)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:800;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 4rem;height:72px}
+.nav-logo{font-family:var(--serif);font-size:1.3rem;font-weight:500;color:var(--navy);text-decoration:none;letter-spacing:.01em}
+.nav-logo span{color:var(--green);font-style:italic}
+.nav-links{display:flex;gap:0;list-style:none}
+.nav-links a{font-family:var(--mono);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-mid);text-decoration:none;padding:.5rem 1.4rem;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-1px;left:1.4rem;right:1.4rem;height:2px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.nav-links a:hover{color:var(--navy)}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-links a.active{color:var(--navy)}
+.nav-right{font-family:var(--mono);font-size:.65rem;color:var(--green);letter-spacing:.1em;display:flex;align-items:center;gap:.5rem}
+.nav-right::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* PAGE SYSTEM */
+.page{display:none}.page.active{display:block}
+.deep-dive{display:none}.deep-dive.active{display:block}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden;padding-top:72px}
+.hero-top{flex:1;display:grid;grid-template-columns:1fr 1fr;min-height:calc(100vh - 72px - 40px)}
+.hero-left{background:var(--navy);display:flex;flex-direction:column;justify-content:flex-end;padding:4rem 4rem 5rem;position:relative;overflow:hidden}
+.hero-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 60%,rgba(26,122,74,.15) 0%,transparent 65%)}
+.hero-eyebrow{font-family:var(--mono);font-size:.68rem;color:var(--green2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:.75rem;position:relative}
+.hero-eyebrow::before{content:'';display:block;width:32px;height:1px;background:var(--green2)}
+.hero-name{font-family:var(--serif);font-size:clamp(4rem,8vw,8rem);font-weight:300;line-height:.92;color:var(--white);letter-spacing:-.01em;margin-bottom:2rem;position:relative}
+.hero-name em{display:block;color:var(--silver);font-style:italic;font-weight:300}
+.hero-desc{font-size:.95rem;color:var(--silver);max-width:360px;line-height:1.75;font-weight:300;position:relative}
+.hero-right{background:var(--silver3);display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:4rem;border-left:1px solid var(--border)}
+.hero-stats{display:flex;flex-direction:column;gap:0;width:100%;border:1px solid var(--border);margin-bottom:3rem;background:var(--white)}
+.stat-row{display:flex;justify-content:space-between;align-items:center;padding:1.25rem 1.75rem;border-bottom:1px solid var(--border)}
+.stat-row:last-child{border-bottom:none}
+.stat-label{font-family:var(--mono);font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-light)}
+.stat-val{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--navy)}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:.85rem 2rem;text-decoration:none;transition:all .25s var(--ease);display:inline-block;border:none;cursor:none}
+.btn-primary{background:var(--navy);color:var(--white)}
+.btn-primary:hover{background:var(--green)}
+.btn-outline{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+.btn-outline:hover{background:var(--navy);color:var(--white)}
+
+/* MARQUEE */
+.marquee-track{background:var(--green);padding:.75rem 0;overflow:hidden;border-top:1px solid var(--green);border-bottom:1px solid var(--green2)}
+.marquee-inner{display:flex;gap:3rem;white-space:nowrap;animation:march 22s linear infinite;width:max-content}
+.marquee-inner span{font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.marquee-inner .dot{color:rgba(255,255,255,.35)}
+@keyframes march{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* BIO */
+.bio-section{display:grid;grid-template-columns:1fr 1fr;min-height:80vh}
+.bio-left{background:var(--white);padding:6rem 4rem;border-right:1px solid var(--border)}
+.bio-right{background:var(--silver3);padding:6rem 4rem}
+.section-eyebrow{font-family:var(--mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:1rem;display:flex;align-items:center;gap:.6rem}
+.section-eyebrow::before{content:'';display:block;width:20px;height:1px;background:var(--green)}
+.section-title{font-family:var(--serif);font-size:clamp(2.5rem,4vw,4rem);font-weight:400;line-height:1.05;letter-spacing:-.01em;color:var(--navy);margin-bottom:2rem}
+.bio-text p{font-size:.95rem;color:var(--text-mid);line-height:1.85;font-weight:300;margin-bottom:1.25rem}
+.bio-text p strong{color:var(--navy);font-weight:500}
+.skills-list{margin-top:2rem}
+.skill-group{margin-bottom:2rem}
+.skill-group-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.16em;text-transform:uppercase;color:var(--text-light);margin-bottom:.75rem;padding-bottom:.5rem;border-bottom:1px solid var(--border)}
+.skill-chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:var(--mono);font-size:.62rem;letter-spacing:.06em;padding:.35rem .75rem;border:1px solid var(--border);color:var(--text-mid);background:var(--white);transition:all .2s;cursor:default}
+.chip:hover{border-color:var(--green);color:var(--green);background:var(--green3)}
+
+/* CONTACT */
+.contact-card{background:var(--white);border:1px solid var(--border);padding:2.5rem;margin-bottom:2rem}
+.contact-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border)}
+.contact-row:last-child{border-bottom:none}
+.contact-key{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light)}
+.contact-val{font-size:.9rem;font-weight:400;color:var(--navy)}
+.contact-val a{color:var(--green);text-decoration:none;transition:color .2s}
+.contact-val a:hover{color:var(--navy)}
+.availability{display:flex;align-items:center;gap:.6rem;padding:1rem 1.25rem;background:var(--green3);border:1px solid rgba(26,122,74,.2);font-family:var(--mono);font-size:.65rem;letter-spacing:.1em;color:var(--green)}
+.availability::before{content:'';display:block;width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
+
+/* PROJECTS PAGE */
+.projects-page{padding-top:72px}
+.projects-hero{background:var(--navy);padding:5rem 4rem 4rem;border-bottom:1px solid var(--border-dark)}
+.projects-hero h1{font-family:var(--serif);font-size:clamp(3rem,6vw,6rem);font-weight:300;color:var(--white);line-height:.95;margin-bottom:1rem}
+.projects-hero h1 em{color:var(--silver);font-style:italic}
+.projects-hero p{font-size:.95rem;color:var(--silver);font-weight:300;max-width:500px;line-height:1.7}
+.projects-grid-outer{background:var(--silver3);padding:3rem 4rem}
+.projects-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.project-tile{background:var(--white);padding:2.5rem;cursor:none;transition:background .2s;position:relative;overflow:hidden;display:flex;flex-direction:column;gap:1.25rem}
+.project-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tile-color,var(--green));transform:scaleY(0);transform-origin:bottom;transition:transform .3s var(--ease)}
+.project-tile:hover{background:var(--silver3)}
+.project-tile:hover::before{transform:scaleY(1)}
+.tile-status{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;padding:.3rem .7rem;display:inline-flex;width:fit-content;align-items:center;gap:.5rem}
+.tile-status::before{content:'';display:block;width:5px;height:5px;border-radius:50%;background:currentColor}
+.status-active{color:var(--green);background:var(--green3);border:1px solid rgba(26,122,74,.2)}
+.status-done{color:var(--text-mid);background:var(--silver3);border:1px solid var(--border)}
+.status-wip{color:#a06820;background:#fdf3e3;border:1px solid rgba(160,104,32,.2)}
+.tile-name{font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--navy);line-height:1;letter-spacing:-.01em}
+.tile-desc{font-size:.88rem;color:var(--text-mid);line-height:1.7;font-weight:300;flex:1}
+.tile-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tile-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.06em;padding:.25rem .6rem;border:1px solid var(--border);color:var(--text-light)}
+.tile-arrow{font-size:.8rem;color:var(--text-light);font-family:var(--mono);display:flex;align-items:center;gap:.4rem;transition:color .2s,gap .2s}
+.project-tile:hover .tile-arrow{color:var(--green);gap:.7rem}
+
+/* DEEP DIVE */
+.deep-header{background:var(--navy);padding:5rem 4rem 4rem;display:grid;grid-template-columns:1fr auto;gap:4rem;align-items:end}
+.deep-back{font-family:var(--mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--silver);cursor:none;display:flex;align-items:center;gap:.5rem;margin-bottom:2rem;transition:color .2s;background:none;border:none;padding:0}
+.deep-back:hover{color:var(--green)}
+.deep-title{font-family:var(--serif);font-size:clamp(3.5rem,7vw,7rem);font-weight:300;color:var(--white);line-height:.9;letter-spacing:-.01em}
+.deep-title em{color:var(--silver);font-style:italic;display:block}
+.deep-meta{display:flex;flex-direction:column;gap:.75rem;min-width:200px}
+.deep-meta-row{text-align:right}
+.deep-meta-label{font-family:var(--mono);font-size:.58rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-light);display:block;margin-bottom:.2rem}
+.deep-meta-val{font-family:var(--serif);font-size:1.1rem;color:var(--white);font-weight:400}
+.deep-body{display:grid;grid-template-columns:2fr 1fr;gap:0}
+.deep-main{padding:4rem;border-right:1px solid var(--border)}
+.deep-sidebar{padding:4rem 3rem;background:var(--silver3)}
+.deep-section{margin-bottom:3rem}
+.deep-section-title{font-family:var(--serif);font-size:1.5rem;font-weight:500;color:var(--navy);margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--border)}
+.deep-section p{font-size:.93rem;color:var(--text-mid);line-height:1.8;font-weight:300;margin-bottom:.75rem}
+.deep-section p strong{color:var(--navy);font-weight:500}
+
+/* JOURNAL */
+.journal-entry{border:1px solid var(--border);margin-bottom:1.5rem;background:var(--white)}
+.journal-header{padding:1rem 1.5rem;background:var(--silver3);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.journal-date{font-family:var(--mono);font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-light)}
+.journal-tag{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;padding:.2rem .6rem;background:var(--navy);color:var(--silver2)}
+.journal-title{font-family:var(--serif);font-size:1.2rem;font-weight:400;color:var(--navy);padding:1.25rem 1.5rem .5rem}
+.journal-body{padding:.5rem 1.5rem 1.5rem;font-size:.88rem;color:var(--text-mid);line-height:1.8;font-weight:300}
+
+/* SPECS SIDEBAR */
+.spec-block{border:1px solid var(--border);margin-bottom:1.5rem;background:var(--white)}
+.spec-title{font-family:var(--mono);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--text-light);padding:.9rem 1.25rem;background:var(--silver3);border-bottom:1px solid var(--border)}
+.spec-row{display:flex;justify-content:space-between;align-items:flex-start;padding:.85rem 1.25rem;border-bottom:1px solid var(--border);gap:1rem}
+.spec-row:last-child{border-bottom:none}
+.spec-key{font-size:.8rem;color:var(--text-light);font-weight:300;flex-shrink:0}
+.spec-val{font-size:.72rem;color:var(--navy);font-weight:400;text-align:right;font-family:var(--mono)}
+.deep-links{display:flex;flex-direction:column;gap:.75rem;margin-top:1.5rem}
+.deep-link{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;background:var(--white);border:1px solid var(--border);text-decoration:none;color:var(--navy);transition:all .2s;font-size:.85rem}
+.deep-link:hover{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.deep-link-label{font-family:var(--mono);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-light)}
+.deep-link:hover .deep-link-label{color:var(--silver)}
+
+/* FOOTER */
+footer{background:var(--navy);padding:3rem 4rem;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border-dark)}
+footer p{font-family:var(--mono);font-size:.62rem;letter-spacing:.08em;color:var(--text-light)}
+footer p span{color:var(--silver)}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav{padding:0 1.5rem}.nav-links{display:none}
+  .hero-top{grid-template-columns:1fr}.hero-right{display:none}
+  .bio-section{grid-template-columns:1fr}.bio-right{border-top:1px solid var(--border)}
+  .deep-body{grid-template-columns:1fr}.deep-header{grid-template-columns:1fr}
+  .bio-left,.bio-right,.projects-hero,.projects-grid-outer,.deep-main,.deep-sidebar,.deep-header{padding-left:1.5rem;padding-right:1.5rem}
+}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--silver3)}
+::-webkit-scrollbar-thumb{background:var(--navy);border-radius:0}
+</style>
 </head>
 <body>
 
-  <div class="cursor" id="cursor"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
 
-  <!-- NAV -->
-  <nav>
-    <a href="#" class="nav-logo"><span>//</span> nsreeni07</a>
-    <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" onclick="showPage('home');return false">S<span>.</span>Narayanan</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home');return false" id="nav-home" class="active">Home</a></li>
+    <li><a href="#" onclick="showPage('projects');return false" id="nav-projects">Projects</a></li>
+    <li><a href="#" onclick="showPage('home');setTimeout(scrollToBio,150);return false">About</a></li>
+    <li><a href="#" onclick="showPage('home');setTimeout(scrollToContact,150);return false">Contact</a></li>
+  </ul>
+  <div class="nav-right">Open to Sponsorship</div>
+</nav>
 
-  <!-- HERO -->
+<!-- ═══ HOME PAGE ═══ -->
+<div class="page active" id="page-home">
+
   <div class="hero">
-    <div class="hero-inner">
-      <div class="hero-tag">Aerospace &amp; Mechanical Engineering</div>
-      <h1>
-        <span class="line-1">Sreeni</span>
-        <span class="line-2">Narayanan</span>
-      </h1>
-      <p class="hero-desc">
-        High school builder focused on <strong>aerospace systems, flight computers, and autonomous UAVs</strong>. 
-        I design, solder, print, and fly the things I build.
-      </p>
-      <div class="hero-cta">
-        <a href="#projects" class="btn btn-primary">View Projects</a>
-        <a href="#contact" class="btn btn-outline">Get in Touch</a>
+    <div class="hero-top">
+      <div class="hero-left">
+        <div class="hero-eyebrow reveal">Aerospace · Mechanical Engineering · New Jersey</div>
+        <h1 class="hero-name reveal d1">Sreeni<em>Narayanan</em></h1>
+        <p class="hero-desc reveal d2">High school engineer building flight computers, autonomous UAVs, and real hardware from the ground up. Hack Club Stasis &amp; Blueprint.</p>
+        <div style="margin-top:2.5rem;display:flex;gap:.75rem;flex-wrap:wrap" class="reveal d3">
+          <a href="#" class="btn btn-primary" onclick="showPage('projects');return false">View Projects</a>
+          <a href="#" class="btn btn-outline" onclick="showPage('home');setTimeout(scrollToContact,150);return false">Get in Touch</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <div class="hero-stats reveal d1">
+          <div class="stat-row"><span class="stat-label">Current Build</span><span class="stat-val">OSCAR UAV</span></div>
+          <div class="stat-row"><span class="stat-label">Frame Diagonal</span><span class="stat-val">850 mm</span></div>
+          <div class="stat-row"><span class="stat-label">Est. Flight Time</span><span class="stat-val">25 – 30 min</span></div>
+          <div class="stat-row"><span class="stat-label">Programs</span><span class="stat-val">Hack Club Stasis</span></div>
+          <div class="stat-row"><span class="stat-label">Location</span><span class="stat-val">North Brunswick, NJ</span></div>
+        </div>
+        <a href="#" class="btn btn-primary reveal d2" onclick="showPage('projects');return false">Explore Projects</a>
       </div>
     </div>
-
-    <div class="hero-stats">
-      <div class="stat">
-        <span class="stat-num">3+</span>
-        <span class="stat-label">Flight Computers Built</span>
-        <div class="stat-line"></div>
-      </div>
-      <div class="stat">
-        <span class="stat-num">850mm</span>
-        <span class="stat-label">Largest UAV Diagonal</span>
-        <div class="stat-line"></div>
-      </div>
-      <div class="stat">
-        <span class="stat-num">NJ</span>
-        <span class="stat-label">North Brunswick, NJ</span>
+    <div class="marquee-track">
+      <div class="marquee-inner">
+        <span>Carbon Fiber Frame Design</span><span class="dot">·</span><span>INAV Autonomous Navigation</span><span class="dot">·</span><span>NDVI Agricultural Mapping</span><span class="dot">·</span><span>LoRa Telemetry</span><span class="dot">·</span><span>Custom Flight Computers</span><span class="dot">·</span><span>Meshtastic GPS Tracking</span><span class="dot">·</span><span>3D Printing · Soldering · ESP32</span><span class="dot">·</span><span>Hack Club Stasis 2025</span><span class="dot">·</span><span>Carbon Fiber Frame Design</span><span class="dot">·</span><span>INAV Autonomous Navigation</span><span class="dot">·</span><span>NDVI Agricultural Mapping</span><span class="dot">·</span><span>LoRa Telemetry</span><span class="dot">·</span><span>Custom Flight Computers</span><span class="dot">·</span><span>Meshtastic GPS Tracking</span><span class="dot">·</span><span>3D Printing · Soldering · ESP32</span><span class="dot">·</span><span>Hack Club Stasis 2025</span><span class="dot">·</span>
       </div>
     </div>
   </div>
 
-  <!-- PROJECTS -->
-  <section id="projects">
-    <div class="section-label">Build Log</div>
-    <h2 class="section-title">Projects</h2>
-
-    <div class="projects-grid">
-
-      <!-- OSCAR - featured -->
-      <a class="project-card featured fade-up d1" style="--card-accent: #e8622a;" href="#oscar">
-        <div class="project-status status-active">Active Build</div>
-        <div class="project-name">OSCAR</div>
-        <p class="project-desc">
-          Endurance-optimized agricultural mapping quadcopter on a custom-designed 850mm carbon fiber frame. 
-          Custom round-tube motor mounts with internal wire routing, Matek H743 + INAV autonomous waypoints, 
-          Raspberry Pi Zero 2W NDVI imaging payload, and a self-designed passive pendulum gimbal. 
-          25–30 min flight time targeting crop health mapping.
-        </p>
-        <div class="project-tags">
-          <span class="tag">CF Frame Design</span>
-          <span class="tag">INAV</span>
-          <span class="tag">MAVLink</span>
-          <span class="tag">NDVI / OpenCV</span>
-          <span class="tag">6S LiPo</span>
-          <span class="tag">Hack Club Stasis</span>
-        </div>
-        <span class="project-arrow">↗</span>
-      </a>
-
-      <!-- STRATO -->
-      <a class="project-card fade-up d2" style="--card-accent: #3b96d4;" href="#strato">
-        <div class="project-status status-complete">Complete</div>
-        <div class="project-name">STRATO</div>
-        <p class="project-desc">
-          Custom hobby rocket flight computer built on a LilyGO T-Beam (ESP32 + GPS + LoRa + OLED). 
-          Full flight state machine with BMP280 barometric sensing, LoRa telemetry to a ground receiver, 
-          OLED HUD, and an ESP32-CAM for onboard video. Resolved I2C bus conflicts, SH1106 OLED driver 
-          issues, and TX/RX pin conflicts along the way.
-        </p>
-        <div class="project-tags">
-          <span class="tag">ESP32</span>
-          <span class="tag">LoRa</span>
-          <span class="tag">BMP280</span>
-          <span class="tag">State Machine</span>
-          <span class="tag">Rocketry</span>
-        </div>
-        <span class="project-arrow">↗</span>
-      </a>
-
-      <!-- TrailBeam -->
-      <a class="project-card fade-up d3" style="--card-accent: #2dd4a0;" href="#trailbeam">
-        <div class="project-status status-wip">In Progress</div>
-        <div class="project-name">TrailBeam</div>
-        <p class="project-desc">
-          Real-time GPS hiking tracker using a LilyGO T-Beam running Meshtastic firmware. 
-          Single-board WiFi/MQTT architecture feeding live position packets to a Leaflet.js 
-          map dashboard. Built for off-grid trail tracking without cell coverage.
-        </p>
-        <div class="project-tags">
-          <span class="tag">Meshtastic</span>
-          <span class="tag">MQTT</span>
-          <span class="tag">Leaflet.js</span>
-          <span class="tag">GPS</span>
-          <span class="tag">LilyGO T-Beam</span>
-        </div>
-        <span class="project-arrow">↗</span>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-label">Capabilities</div>
-    <h2 class="section-title">Skills &amp; Tools</h2>
-
-    <div class="skills-grid">
-      <div class="skill-block fade-up d1">
-        <div class="skill-category">Fabrication</div>
-        <ul class="skill-list">
-          <li>Soldering (SMD + through-hole)</li>
-          <li>3D printing (FDM — PETG, CF-PETG)</li>
-          <li>Carbon fiber cutting &amp; finishing</li>
-          <li>Heat-set insert installation</li>
-          <li>Wire harness routing</li>
-        </ul>
+  <!-- BIO -->
+  <div class="bio-section" id="bio-section">
+    <div class="bio-left">
+      <div class="section-eyebrow reveal">About Me</div>
+      <h2 class="section-title reveal d1">Builder.<br><em style="font-style:italic;color:var(--green)">Engineer.</em><br>Maker.</h2>
+      <div class="bio-text">
+        <p class="reveal d2">I'm a high school student in <strong>North Brunswick, New Jersey</strong> building an engineering portfolio aimed at aerospace and mechanical engineering. I build things that physically exist — flight computers, carbon fiber frames, autonomous drones, GPS trackers.</p>
+        <p class="reveal d3">I'm part of <strong>Hack Club's Stasis and Blueprint programs</strong>, where I've shipped hardware projects ranging from a custom rocket flight computer (STRATO) to OSCAR, an 850mm agricultural mapping UAV I designed from scratch — custom motor mounts, internal wire routing through hollow carbon fiber arms, and a passive pendulum gimbal for the NDVI camera payload.</p>
+        <p class="reveal d4">My long-term goal is to study <strong>Aerospace or Mechanical Engineering</strong> and work on real propulsion, autonomy, or structural systems — the kind of work that actually flies.</p>
       </div>
-      <div class="skill-block fade-up d2">
-        <div class="skill-category">Electronics</div>
-        <ul class="skill-list">
-          <li>ESP32 / STM32 microcontrollers</li>
-          <li>I2C, UART, SPI bus configuration</li>
-          <li>LoRa RF telemetry</li>
-          <li>LiPo / 6S power systems</li>
-          <li>Oscilloscope &amp; multimeter debug</li>
-        </ul>
-      </div>
-      <div class="skill-block fade-up d3">
-        <div class="skill-category">Drone Systems</div>
-        <ul class="skill-list">
-          <li>INAV flight controller config</li>
-          <li>MAVLink protocol integration</li>
-          <li>GPS waypoint mission planning</li>
-          <li>ESC calibration &amp; DShot</li>
-          <li>Telemetry &amp; ground station setup</li>
-        </ul>
-      </div>
-      <div class="skill-block fade-up d4">
-        <div class="skill-category">Software</div>
-        <ul class="skill-list">
-          <li>Python (MicroPython, Raspberry Pi)</li>
-          <li>OpenCV / NDVI image processing</li>
-          <li>Meshtastic / MQTT</li>
-          <li>WebODM API integration</li>
-          <li>Git / GitHub Pages</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="section-label">Background</div>
-    <h2 class="section-title">About Me</h2>
-
-    <div class="about-grid">
-      <div class="about-text fade-up d1">
-        <p>
-          I'm a high school student in <strong>North Brunswick, New Jersey</strong> building an engineering 
-          portfolio aimed at aerospace and mechanical engineering. I've been part of <strong>Hack Club</strong>'s 
-          Blueprint and Stasis programs, where I've shipped hardware projects ranging from rocket flight computers 
-          to autonomous agricultural UAVs.
-        </p>
-        <p>
-          My focus is on <strong>physical building</strong> over software — I care about the mechanical 
-          design of a motor mount, the thermal behavior of a flight computer enclosure, and the wiring 
-          decisions that separate a clean build from a rats' nest. I use tools like Python and INAV as means 
-          to an end, not the end itself.
-        </p>
-        <p>
-          My long-term goal is to study <strong>aerospace or mechanical engineering</strong> and work on 
-          real propulsion, autonomy, or structural systems — the kind of work that actually flies.
-        </p>
-      </div>
-
-      <div class="about-meta fade-up d2">
-        <div class="meta-row">
-          <span class="meta-key">Location</span>
-          <span class="meta-val">North Brunswick, NJ</span>
+      <div class="skills-list">
+        <div class="skill-group reveal">
+          <div class="skill-group-label">Fabrication</div>
+          <div class="skill-chips"><span class="chip">Soldering</span><span class="chip">3D Printing (PETG, CF-PETG)</span><span class="chip">Carbon Fiber Cutting</span><span class="chip">Heat-set Inserts</span><span class="chip">Wire Harness Routing</span></div>
         </div>
-        <div class="meta-row">
-          <span class="meta-key">Programs</span>
-          <span class="meta-val">Hack Club Blueprint &amp; Stasis</span>
+        <div class="skill-group reveal d1">
+          <div class="skill-group-label">Electronics & Firmware</div>
+          <div class="skill-chips"><span class="chip">ESP32 / STM32</span><span class="chip">INAV / ArduPilot</span><span class="chip">MAVLink</span><span class="chip">LoRa / Meshtastic</span><span class="chip">I2C · UART · SPI</span><span class="chip">DShot / ESC</span></div>
         </div>
-        <div class="meta-row">
-          <span class="meta-key">Focus</span>
-          <span class="meta-val">Aerospace / Mech Engineering</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">Current Build</span>
-          <span class="meta-val">OSCAR — 850mm Ag UAV</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">Tools</span>
-          <span class="meta-val">Soldering Iron, Oscilloscope, 3D Printer</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-key">Status</span>
-          <span class="meta-val" style="color: var(--accent3);">Open to Sponsorship</span>
+        <div class="skill-group reveal d2">
+          <div class="skill-group-label">Software & Tools</div>
+          <div class="skill-chips"><span class="chip">Python</span><span class="chip">OpenCV / NDVI</span><span class="chip">WebODM API</span><span class="chip">MQTT</span><span class="chip">Leaflet.js</span><span class="chip">Onshape CAD</span><span class="chip">Git</span></div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="section-label">Reach Out</div>
-    <div class="contact-inner fade-up">
-      <div>
-        <div class="contact-title">Let's Talk</div>
-        <p class="contact-sub">
-          Open to project sponsorships, hardware partnerships, and conversations 
-          with engineers doing interesting work. If you're building something that 
-          flies — I want to hear about it.
-        </p>
+    <div class="bio-right" id="contact-section">
+      <div class="section-eyebrow reveal">Contact & Links</div>
+      <h2 class="section-title reveal d1">Let's<br>Connect.</h2>
+      <div class="availability reveal d2">Open to Hardware Sponsorships &amp; Partnerships</div>
+      <div class="contact-card reveal d3" style="margin-top:1.5rem">
+        <div class="contact-row"><span class="contact-key">GitHub</span><span class="contact-val"><a href="https://github.com/nsreeni07" target="_blank">github.com/nsreeni07</a></span></div>
+        <div class="contact-row"><span class="contact-key">Email</span><span class="contact-val"><a href="mailto:your@email.com">your@email.com</a></span></div>
+        <div class="contact-row"><span class="contact-key">Hack Club</span><span class="contact-val"><a href="https://hackclub.com" target="_blank">Stasis / Blueprint</a></span></div>
+        <div class="contact-row"><span class="contact-key">Location</span><span class="contact-val">North Brunswick, NJ</span></div>
+        <div class="contact-row"><span class="contact-key">School</span><span class="contact-val">North Brunswick Township HS</span></div>
       </div>
-      <div class="contact-links">
-        <a class="contact-link" href="https://github.com/nsreeni07" target="_blank" rel="noopener">
-          <span class="contact-link-label">GitHub</span>
-          <span class="contact-link-val">nsreeni07</span>
-        </a>
-        <a class="contact-link" href="https://hackclub.com" target="_blank" rel="noopener">
-          <span class="contact-link-label">Hack Club</span>
-          <span class="contact-link-val">Stasis / Blueprint</span>
-        </a>
-        <!-- Add your email below when ready -->
-        <a class="contact-link" href="mailto:your@email.com">
-          <span class="contact-link-label">Email</span>
-          <span class="contact-link-val">your@email.com</span>
-        </a>
-      </div>
+      <p class="reveal d4" style="font-size:.82rem;color:var(--text-light);line-height:1.7;font-weight:300;margin-top:1rem">Interested in sponsoring a component, partnering on a build, or just talking shop about drones and aerospace? Reach out — I respond to everything.</p>
     </div>
-  </section>
+  </div>
 
   <footer>
-    <p>© 2025 <span>Sreeni Narayanan</span> — North Brunswick, NJ</p>
-    <p>Built with HTML · Hosted on GitHub Pages</p>
+    <p>© 2026 <span>Sreeni Narayanan</span> — North Brunswick, NJ</p>
+    <p>Hack Club Stasis · Blueprint · Built with HTML</p>
   </footer>
+</div>
 
-  <script>
-    // Cursor
-    const cursor = document.getElementById('cursor');
-    document.addEventListener('mousemove', e => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
+<!-- ═══ PROJECTS PAGE ═══ -->
+<div class="page" id="page-projects">
+  <div class="projects-page">
+    <div class="projects-hero">
+      <div class="section-eyebrow reveal" style="color:var(--green2)">Build Log</div>
+      <h1 class="reveal d1">Projects<em>& Builds</em></h1>
+      <p class="reveal d2">Every project here was physically built, soldered, printed, and tested. Click any project for full technical details, journal entries, and links.</p>
+    </div>
+    <div class="projects-grid-outer">
+      <div class="projects-list reveal">
+        <div class="project-tile" style="--tile-color:var(--green)" onclick="showDeepDive('oscar')">
+          <div class="tile-status status-active">Active Build</div>
+          <div class="tile-name">OSCAR</div>
+          <p class="tile-desc">Custom 850mm carbon fiber agricultural mapping quadcopter. Self-designed round-tube frame with internal wire routing, 4114 motors, Matek H743 + INAV autonomous navigation, and a Raspberry Pi Zero 2W NDVI imaging payload on a custom passive pendulum gimbal. Targeting 25–30 min mission endurance for crop health mapping.</p>
+          <div class="tile-tags"><span class="tile-tag">Custom CF Frame</span><span class="tile-tag">INAV</span><span class="tile-tag">MAVLink</span><span class="tile-tag">NDVI</span><span class="tile-tag">6S LiPo</span><span class="tile-tag">Hack Club Stasis</span></div>
+          <div class="tile-arrow">View Project <span>→</span></div>
+        </div>
+        <div class="project-tile" style="--tile-color:var(--navy)" onclick="showDeepDive('strato')">
+          <div class="tile-status status-done">Complete</div>
+          <div class="tile-name">STRATO</div>
+          <p class="tile-desc">Custom hobby rocket flight computer built on a LilyGO T-Beam (ESP32 + GPS + LoRa + OLED). Full flight state machine with BMP280 barometric altitude sensing, live LoRa telemetry to a ground receiver, OLED HUD, and ESP32-CAM onboard video. Resolved I2C bus conflicts, SH1106 OLED driver, and TX/RX pin conflicts throughout the build.</p>
+          <div class="tile-tags"><span class="tile-tag">ESP32</span><span class="tile-tag">LoRa</span><span class="tile-tag">BMP280</span><span class="tile-tag">State Machine</span><span class="tile-tag">Rocketry</span><span class="tile-tag">LilyGO T-Beam</span></div>
+          <div class="tile-arrow">View Project <span>→</span></div>
+        </div>
+        <div class="project-tile" style="--tile-color:#a06820" onclick="showDeepDive('trailbeam')">
+          <div class="tile-status status-wip">In Progress</div>
+          <div class="tile-name">TrailBeam</div>
+          <p class="tile-desc">Real-time GPS hiking tracker designed to work entirely without cell coverage. LilyGO T-Beam running Meshtastic firmware, single-board WiFi/MQTT architecture, and a Leaflet.js map dashboard. GPS lock and MQTT broker connection confirmed — fine-tuning minimum distance broadcast settings.</p>
+          <div class="tile-tags"><span class="tile-tag">Meshtastic</span><span class="tile-tag">MQTT</span><span class="tile-tag">Leaflet.js</span><span class="tile-tag">GPS</span><span class="tile-tag">LilyGO T-Beam</span></div>
+          <div class="tile-arrow">View Project <span>→</span></div>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <p>© 2026 <span>Sreeni Narayanan</span></p>
+      <p>More builds coming — currently in active development</p>
+    </footer>
+  </div>
+</div>
 
-    // Fade-up on scroll
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.1 });
+<!-- ═══ DEEP DIVE: OSCAR ═══ -->
+<div class="deep-dive" id="dive-oscar">
+  <div class="deep-header">
+    <div>
+      <button class="deep-back" onclick="showPage('projects')">← Back to Projects</button>
+      <div style="font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green2);margin-bottom:1rem">Active Build · Hack Club Stasis</div>
+      <div class="deep-title">OSCAR<em>Agricultural Mapping UAV</em></div>
+    </div>
+    <div class="deep-meta">
+      <div class="deep-meta-row"><span class="deep-meta-label">Frame</span><span class="deep-meta-val">850mm Custom CF</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Motors</span><span class="deep-meta-val">4114 320KV</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Battery</span><span class="deep-meta-val">6S 5000mAh</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Est. Flight</span><span class="deep-meta-val">25 – 30 min</span></div>
+    </div>
+  </div>
+  <div class="deep-body">
+    <div class="deep-main">
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Overview</div>
+        <p>OSCAR is an endurance-optimized agricultural mapping quadcopter built on a custom-designed 850mm carbon fiber frame. The entire software stack — MAVLink integration, distance-based camera trigger, geotagging, NDVI processing, and WebODM API pipeline — was written from scratch.</p>
+        <p>This is not a kit build. Every subsystem — frame, gimbal, software, and imaging pipeline — was designed, built, and coded by me.</p>
+      </div>
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Frame Design</div>
+        <p>The frame uses 16mm round carbon fiber tubing (2mm wall) and 3D-printed PETG-CF structural connectors. Round tube was chosen specifically to enable <strong>internal wire routing</strong> — all motor phase wires run through the hollow arm center from the ESC stack to the motor tip, resulting in zero exposed wiring on any arm.</p>
+        <p>Motor mounts are round clamp-style blocks gripping 45mm of arm tube with M3 bolts through heat-set inserts. <strong>Nylon M3 bolts</strong> are used on center plates for electrical isolation and vibration damping. <strong>Steel M3 bolts</strong> handle motor mount clamping load — a deliberate materials decision.</p>
+      </div>
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Imaging Payload & Passive Gimbal</div>
+        <p>The payload is a Raspberry Pi Zero 2W with a NoIR Pi Camera v2 and a 680nm bandpass filter for NDVI vegetation health approximation. All images are geotagged in real-time from a MAVLink GPS stream over serial.</p>
+        <p>Camera stabilization uses a <strong>custom single-axis passive pendulum gimbal</strong> — no motors, no electronics. A wooden dowel through two F688 ball bearings lets gravity keep the camera nadir regardless of drone pitch. Pendulum length was calculated to keep its natural oscillation frequency below INAV's pitch correction band, preventing resonance.</p>
+      </div>
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Build Journal</div>
+        <div class="journal-entry">
+          <div class="journal-header">
+            <span class="journal-date">2 days ago · 4h logged</span>
+            <span class="journal-tag">Design</span>
+          </div>
+          <div class="journal-title">Frame Design and Sponsors</div>
+          <div class="journal-body">So I worked on my drone frame today — I looked through some frames for sale and took inspiration, then after drawing my own sketch I went into Onshape and designed the bottom plate. I'm going to design the top plate after, but progress is a bit slow because I have exams right now.<br><br>Because my new plan is an 850mm drone the cost is quite high, so I'm paying about $100 out of pocket and hoping to get $200 from Stasis and $200 from outside sponsors. I've created a list and I'm going to start emailing — fingers crossed.<br><br>Back to the drone frame: I'm going to use clamps to secure the motor arms together and tighten with M3 nylon bolts. That's pretty much it for today.</div>
+        </div>
+        <div class="journal-entry">
+          <div class="journal-header">
+            <span class="journal-date">Add your next entry here</span>
+            <span class="journal-tag">Build Log</span>
+          </div>
+          <div class="journal-title">Your Next Entry Title</div>
+          <div class="journal-body">Replace this with your next Stasis journal update as you make progress on the build. Copy the journal-entry block above to add more entries.</div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-sidebar">
+      <div class="spec-block reveal">
+        <div class="spec-title">Key Specifications</div>
+        <div class="spec-row"><span class="spec-key">Frame diagonal</span><span class="spec-val">850mm</span></div>
+        <div class="spec-row"><span class="spec-key">Motors</span><span class="spec-val">4114 320KV ×4</span></div>
+        <div class="spec-row"><span class="spec-key">Props</span><span class="spec-val">17" CF</span></div>
+        <div class="spec-row"><span class="spec-key">Flight controller</span><span class="spec-val">Matek H743 Slim V3</span></div>
+        <div class="spec-row"><span class="spec-key">Firmware</span><span class="spec-val">INAV</span></div>
+        <div class="spec-row"><span class="spec-key">Battery</span><span class="spec-val">6S 5000mAh 45C</span></div>
+        <div class="spec-row"><span class="spec-key">Telemetry</span><span class="spec-val">915MHz SiK</span></div>
+        <div class="spec-row"><span class="spec-key">Companion</span><span class="spec-val">Pi Zero 2W</span></div>
+        <div class="spec-row"><span class="spec-key">Camera</span><span class="spec-val">Pi NoIR v2 + 680nm</span></div>
+        <div class="spec-row"><span class="spec-key">Est. AUW</span><span class="spec-val">~2.6 kg</span></div>
+        <div class="spec-row"><span class="spec-key">T/W ratio</span><span class="spec-val">~2.08:1</span></div>
+        <div class="spec-row"><span class="spec-key">Mission time</span><span class="spec-val">25 – 30 min</span></div>
+      </div>
+      <div class="spec-block reveal d1">
+        <div class="spec-title">Tech Stack</div>
+        <div class="spec-row"><span class="spec-key">Autopilot</span><span class="spec-val">INAV</span></div>
+        <div class="spec-row"><span class="spec-key">Protocol</span><span class="spec-val">MAVLink</span></div>
+        <div class="spec-row"><span class="spec-key">Mapping</span><span class="spec-val">WebODM API</span></div>
+        <div class="spec-row"><span class="spec-key">NDVI</span><span class="spec-val">OpenCV / Python</span></div>
+        <div class="spec-row"><span class="spec-key">RC</span><span class="spec-val">FlySky iBus</span></div>
+        <div class="spec-row"><span class="spec-key">GPS</span><span class="spec-val">M8N uBlox</span></div>
+      </div>
+      <div class="deep-links reveal d2">
+        <a href="https://github.com/nsreeni07" target="_blank" class="deep-link">GitHub Repository <span class="deep-link-label">↗</span></a>
+        <a href="https://hackclub.com" target="_blank" class="deep-link">Hack Club Stasis <span class="deep-link-label">↗</span></a>
+        <a href="#" class="deep-link" onclick="showPage('projects');return false">← All Projects <span class="deep-link-label"></span></a>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2026 <span>Sreeni Narayanan</span></p><p>OSCAR — Hack Club Stasis Submission</p></footer>
+</div>
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+<!-- ═══ DEEP DIVE: STRATO ═══ -->
+<div class="deep-dive" id="dive-strato">
+  <div class="deep-header">
+    <div>
+      <button class="deep-back" onclick="showPage('projects')">← Back to Projects</button>
+      <div style="font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green2);margin-bottom:1rem">Complete · Custom Flight Computer</div>
+      <div class="deep-title">STRATO<em>Rocket Flight Computer</em></div>
+    </div>
+    <div class="deep-meta">
+      <div class="deep-meta-row"><span class="deep-meta-label">Platform</span><span class="deep-meta-val">LilyGO T-Beam</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">MCU</span><span class="deep-meta-val">ESP32</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Comms</span><span class="deep-meta-val">LoRa 915MHz</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Status</span><span class="deep-meta-val">Complete</span></div>
+    </div>
+  </div>
+  <div class="deep-body">
+    <div class="deep-main">
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Overview</div>
+        <p>STRATO is a custom hobby rocket flight computer built around a LilyGO T-Beam V1.2, integrating an ESP32 microcontroller, GPS module, LoRa radio, and OLED display on a single board.</p>
+        <p>The system features a full <strong>flight state machine</strong> — detecting launch, boost, coast, apogee, descent, and landing phases using BMP280 barometric altitude. Live telemetry transmits via LoRa to a handheld ground receiver. An ESP32-CAM captures onboard video.</p>
+      </div>
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Key Challenges Solved</div>
+        <p><strong>USB cable:</strong> Initial flashing failures traced to a charge-only USB cable with no data lines. Classic first-build trap.</p>
+        <p><strong>Download mode:</strong> Required holding IO38 + RST simultaneously to enter the ESP32 download mode for flashing.</p>
+        <p><strong>I2C bus:</strong> OLED at 0x3C and BMP280 at 0x76 on a shared bus — OLED driver identified as SH1106, not the more common SSD1306. Wrong driver = blank screen.</p>
+        <p><strong>TX/RX pin conflicts:</strong> Resolved UART pin conflicts between LoRa, GPS, and serial debug on the T-Beam's limited pin layout.</p>
+      </div>
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Build Journal</div>
+        <div class="journal-entry">
+          <div class="journal-header"><span class="journal-date">Build Log</span><span class="journal-tag">Firmware</span></div>
+          <div class="journal-title">Flight State Machine Complete</div>
+          <div class="journal-body">All six flight phases implemented and tested on bench: IDLE → LAUNCH_DETECT → BOOST → COAST → APOGEE → DESCENT → LANDED. BMP280 altitude delta triggers state transitions. LoRa packets transmit state + altitude + GPS coordinates every 500ms. Ground receiver decodes and prints to serial monitor in real time.</div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-sidebar">
+      <div class="spec-block reveal">
+        <div class="spec-title">Hardware</div>
+        <div class="spec-row"><span class="spec-key">Board</span><span class="spec-val">LilyGO T-Beam V1.2</span></div>
+        <div class="spec-row"><span class="spec-key">MCU</span><span class="spec-val">ESP32</span></div>
+        <div class="spec-row"><span class="spec-key">Baro</span><span class="spec-val">BMP280 @ 0x76</span></div>
+        <div class="spec-row"><span class="spec-key">Display</span><span class="spec-val">SH1106 OLED @ 0x3C</span></div>
+        <div class="spec-row"><span class="spec-key">Radio</span><span class="spec-val">LoRa 915MHz</span></div>
+        <div class="spec-row"><span class="spec-key">Camera</span><span class="spec-val">ESP32-CAM</span></div>
+        <div class="spec-row"><span class="spec-key">GPS</span><span class="spec-val">Onboard NEO-6M</span></div>
+      </div>
+      <div class="deep-links reveal d1">
+        <a href="https://github.com/nsreeni07" target="_blank" class="deep-link">GitHub Repository <span class="deep-link-label">↗</span></a>
+        <a href="#" class="deep-link" onclick="showPage('projects');return false">← All Projects <span class="deep-link-label"></span></a>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2026 <span>Sreeni Narayanan</span></p><p>STRATO — Custom Rocket Flight Computer</p></footer>
+</div>
 
-    // Nav active link highlight
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
+<!-- ═══ DEEP DIVE: TRAILBEAM ═══ -->
+<div class="deep-dive" id="dive-trailbeam">
+  <div class="deep-header">
+    <div>
+      <button class="deep-back" onclick="showPage('projects')">← Back to Projects</button>
+      <div style="font-family:var(--mono);font-size:.65rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green2);margin-bottom:1rem">In Progress · GPS Tracker</div>
+      <div class="deep-title">TrailBeam<em>Real-Time GPS Hiking Tracker</em></div>
+    </div>
+    <div class="deep-meta">
+      <div class="deep-meta-row"><span class="deep-meta-label">Platform</span><span class="deep-meta-val">LilyGO T-Beam</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Firmware</span><span class="deep-meta-val">Meshtastic</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Dashboard</span><span class="deep-meta-val">Leaflet.js</span></div>
+      <div class="deep-meta-row"><span class="deep-meta-label">Protocol</span><span class="deep-meta-val">MQTT</span></div>
+    </div>
+  </div>
+  <div class="deep-body">
+    <div class="deep-main">
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Overview</div>
+        <p>TrailBeam is a real-time GPS hiking tracker designed to work entirely without cell coverage. A LilyGO T-Beam running Meshtastic firmware transmits GPS position packets over LoRa radio. A single-board WiFi/MQTT architecture receives the packets and feeds them to a Leaflet.js live map dashboard.</p>
+        <p>GPS lock and MQTT broker connection have been confirmed. Currently fine-tuning the minimum distance broadcast threshold to balance battery life against position update frequency.</p>
+      </div>
+      <div class="deep-section reveal">
+        <div class="deep-section-title">Build Journal</div>
+        <div class="journal-entry">
+          <div class="journal-header"><span class="journal-date">Build Log</span><span class="journal-tag">Progress</span></div>
+          <div class="journal-title">GPS Lock Confirmed</div>
+          <div class="journal-body">T-Beam running Meshtastic — GPS lock achieved outdoors. MQTT broker connection confirmed. Position packets not flowing consistently due to minimum distance broadcast settings being too high for indoor testing. Next step: lower the threshold and test in an open field.</div>
+        </div>
+      </div>
+    </div>
+    <div class="deep-sidebar">
+      <div class="spec-block reveal">
+        <div class="spec-title">Hardware & Stack</div>
+        <div class="spec-row"><span class="spec-key">Board</span><span class="spec-val">LilyGO T-Beam</span></div>
+        <div class="spec-row"><span class="spec-key">Firmware</span><span class="spec-val">Meshtastic</span></div>
+        <div class="spec-row"><span class="spec-key">Radio</span><span class="spec-val">LoRa 915MHz</span></div>
+        <div class="spec-row"><span class="spec-key">Broker</span><span class="spec-val">MQTT</span></div>
+        <div class="spec-row"><span class="spec-key">Map</span><span class="spec-val">Leaflet.js</span></div>
+        <div class="spec-row"><span class="spec-key">Coverage</span><span class="spec-val">Off-grid / No cell</span></div>
+      </div>
+      <div class="deep-links reveal d1">
+        <a href="https://github.com/nsreeni07" target="_blank" class="deep-link">GitHub Repository <span class="deep-link-label">↗</span></a>
+        <a href="#" class="deep-link" onclick="showPage('projects');return false">← All Projects <span class="deep-link-label"></span></a>
+      </div>
+    </div>
+  </div>
+  <footer><p>© 2026 <span>Sreeni Narayanan</span></p><p>TrailBeam — Off-Grid GPS Tracker</p></footer>
+</div>
 
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          navLinks.forEach(a => {
-            a.style.color = a.getAttribute('href') === '#' + entry.target.id
-              ? 'var(--text)' : '';
-          });
-        }
-      });
-    }, { rootMargin: '-40% 0px -50% 0px' });
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function loop(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=Math.round(rx)+'px';ring.style.top=Math.round(ry)+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.project-tile,.chip').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+});
 
-    sections.forEach(s => io.observe(s));
-  </script>
+function showPage(name){
+  document.querySelectorAll('.page,.deep-dive').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  if(name==='home'){
+    document.getElementById('page-home').classList.add('active');
+    document.getElementById('nav-home').classList.add('active');
+  } else if(name==='projects'){
+    document.getElementById('page-projects').classList.add('active');
+    document.getElementById('nav-projects').classList.add('active');
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,120);
+}
+
+function showDeepDive(id){
+  document.querySelectorAll('.page,.deep-dive').forEach(p=>p.classList.remove('active'));
+  document.getElementById('dive-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  setTimeout(initReveal,120);
+}
+
+function scrollToBio(){document.getElementById('bio-section')?.scrollIntoView({behavior:'smooth'})}
+function scrollToContact(){document.getElementById('contact-section')?.scrollIntoView({behavior:'smooth'})}
+
+function initReveal(){
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}});
+  },{threshold:.08});
+  document.querySelectorAll('.reveal:not(.in)').forEach(el=>obs.observe(el));
+}
+initReveal();
+</script>
 </body>
 </html>
